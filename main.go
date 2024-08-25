@@ -25,6 +25,7 @@ func main() {
 		switch r.Method {
 		case "GET":
 			fmt.Fprintf(w, "GET method.")
+			getGasto(w, r)
 		case "POST":
 			fmt.Fprintf(w, "POST method.")
 		case "PUT":
