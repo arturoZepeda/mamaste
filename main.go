@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"mamastw/handler"
 	"net/http"
 )
 
@@ -24,8 +25,13 @@ func main() {
 		logRequest(r)
 		switch r.Method {
 		case "GET":
-			fmt.Fprintf(w, "GET method.")
-			getGastos(w, r)
+			if r.URL.Query().Get("id") != "" {
+				fmt.Println("GET method ID")
+				handler.GetGastoID(w, r)
+			} else {
+				fmt.Println("GET method")
+				handler.GetGastos(w, r)
+			}
 		case "POST":
 			fmt.Fprintf(w, "POST method.")
 		case "PUT":
