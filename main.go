@@ -33,25 +33,29 @@ func main() {
 				handler.GetGastos(w, r)
 			}
 		case "POST":
-			fmt.Fprintf(w, "POST method.")
-		case "PUT":
-			fmt.Fprintf(w, "PUT method.")
+		  handler.PostGasto(w,r)
+    case "PUT":
+      handler.PutGasto(w,r)
 		case "DELETE":
-			fmt.Fprintf(w, "DELETE method.")
-		}
+		  handler.DeleteGasto(w,r)
+    }
 	})
 
 	http.HandleFunc("/ingresos", func(w http.ResponseWriter, r *http.Request) {
 		logRequest(r)
 		switch r.Method {
 		case "GET":
-			fmt.Fprintf(w, "GET method.")
+      if r.URL.Query().Get("id") !="" {
+        handler.GetIngresoID(w,r)
+      }else{
+        handler.GetIngresos(w,r)
+      }
 		case "POST":
-			fmt.Fprintf(w, "POST method.")
-		case "PUT":
-			fmt.Fprintf(w, "PUT method.")
+		  handler.PostIngreso(w,r)
+    case "PUT":
+      handler.PutIngreso(w,r)
 		case "DELETE":
-			fmt.Fprintf(w, "DELETE method.")
+      handler.DeleteIngreso(w,r)
 		}
 	})
 
