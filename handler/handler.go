@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
 func GetGastos(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "GET method desde handler.go")
+	fmt.Fprintf(w, "GET method desde handler")
 }
 
 func GetGastoID(w http.ResponseWriter, r *http.Request) {
@@ -15,34 +16,73 @@ func GetGastoID(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostGasto(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "POST method.")
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error al leer el body: %s", err)
+		return
+	}
+	// body := r.Body
+	fmt.Fprintf(w, "POST method ")
+	fmt.Fprintf(w, "Body: %s", body)
 }
 
 func PutGasto(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		fmt.Fprintf(w, "Error al leer el id")
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error al leer el body: %s", err)
+		return
+	}
 	fmt.Fprintf(w, "PUT method.")
+	fmt.Fprintf(w, "ID: %s", id)
+	fmt.Fprintf(w, "Body: %s", body)
 }
 
 func DeleteGasto(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "DELETE method.")
+	id := r.URL.Query().Get("id")
+	fmt.Fprintf(w, "DELETE method. ID: %s", id)
 }
 
-func GetIngresos(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "Get method desde handler")
+func GetIngresos(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Get method desde handler")
 }
 
-func GetIngresoID(w http.ResponseWriter, r *http.Request){
-  id := r.URL.Query().Get("id")
-  fmt.Fprintf(w, "Get method con ID: %s",id)
+func GetIngresoID(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	fmt.Fprintf(w, "Get method con ID: %s", id)
 }
 
-func PostIngreso(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "POST method ")
+func PostIngreso(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error al leer el body: %s", err)
+		return
+	}
+	fmt.Fprintf(w, "POST method ")
+	fmt.Fprintf(w, "Body: %s", body)
 }
 
-func PutIngreso(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "Put method")
+func PutIngreso(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		fmt.Fprintf(w, "Error al leer el id")
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error al leer el body: %s", err)
+		return
+	}
+	fmt.Fprintf(w, "PUT method.")
+	fmt.Fprintf(w, "ID: %s", id)
+	fmt.Fprintf(w, "Body: %s", body)
 }
 
-func DeleteIngreso(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "DELETE method")
+func DeleteIngreso(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	fmt.Fprintf(w, "DELETE method ID: %s", id)
 }
