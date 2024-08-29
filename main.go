@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	inicializa()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		logRequest(r)
 		switch r.Method {
@@ -33,29 +34,29 @@ func main() {
 				handler.GetGastos(w, r)
 			}
 		case "POST":
-		  handler.PostGasto(w,r)
-    case "PUT":
-      handler.PutGasto(w,r)
+			handler.PostGasto(w, r)
+		case "PUT":
+			handler.PutGasto(w, r)
 		case "DELETE":
-		  handler.DeleteGasto(w,r)
-    }
+			handler.DeleteGasto(w, r)
+		}
 	})
 
 	http.HandleFunc("/ingresos", func(w http.ResponseWriter, r *http.Request) {
 		logRequest(r)
 		switch r.Method {
 		case "GET":
-      if r.URL.Query().Get("id") !="" {
-        handler.GetIngresoID(w,r)
-      }else{
-        handler.GetIngresos(w,r)
-      }
+			if r.URL.Query().Get("id") != "" {
+				handler.GetIngresoID(w, r)
+			} else {
+				handler.GetIngresos(w, r)
+			}
 		case "POST":
-		  handler.PostIngreso(w,r)
-    case "PUT":
-      handler.PutIngreso(w,r)
+			handler.PostIngreso(w, r)
+		case "PUT":
+			handler.PutIngreso(w, r)
 		case "DELETE":
-      handler.DeleteIngreso(w,r)
+			handler.DeleteIngreso(w, r)
 		}
 	})
 
