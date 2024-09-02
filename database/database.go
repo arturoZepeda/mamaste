@@ -41,3 +41,47 @@ func InsertGasto(fecha, concepto string, cantidad float64) {
 		fmt.Println("Gasto insertado")
 	}
 }
+
+func SelectGastos() {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("select * from gastos")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	fmt.Println("ID | Fecha | Concepto | Cantidad")
+	for rows.Next() {
+		var id int
+		var fecha string
+		var concepto string
+		var cantidad float64
+		rows.Scan(&id, &fecha, &concepto, &cantidad)
+		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
+	}
+}
+
+func selectGastoId(id int) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("select * from gastos where id = ?", id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	fmt.Println("ID | Fecha | Concepto | Cantidad")
+	for rows.Next() {
+		var id int
+		var fecha string
+		var concepto string
+		var cantidad float64
+		rows.Scan(&id, &fecha, &concepto, &cantidad)
+		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
+	}
+}
