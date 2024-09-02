@@ -42,7 +42,7 @@ func InsertGasto(fecha, concepto string, cantidad float64) {
 	}
 }
 
-func SelectGastos() {
+func GetGastos() (string, error) {
 	db, err := sql.Open("sqlite3", "./gastos.db")
 	if err != nil {
 		log.Fatal(err)
@@ -62,6 +62,7 @@ func SelectGastos() {
 		rows.Scan(&id, &fecha, &concepto, &cantidad)
 		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
 	}
+	return "Gastos", nil
 }
 
 func selectGastoId(id int) {

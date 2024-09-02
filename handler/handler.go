@@ -3,11 +3,18 @@ package handler
 import (
 	"fmt"
 	"io"
+	mamasdb "mamastw/database"
 	"net/http"
 )
 
 func GetGastos(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "GET method desde handler")
+	FM, err := mamasdb.GetGastos()
+	if err != nil {
+		fmt.Fprintf(w, "Error al obtener los gastos: %s", err)
+		return
+	}
+	fmt.Fprintf(w, "Gastos: %s", FM)
 }
 
 func GetGastoID(w http.ResponseWriter, r *http.Request) {
@@ -24,6 +31,7 @@ func PostGasto(w http.ResponseWriter, r *http.Request) {
 	// body := r.Body
 	fmt.Fprintf(w, "POST method ")
 	fmt.Fprintf(w, "Body: %s", body)
+	mamasdb.InsertGasto("2021-09-01", "Comida", 12.34)
 }
 
 func PutGasto(w http.ResponseWriter, r *http.Request) {
