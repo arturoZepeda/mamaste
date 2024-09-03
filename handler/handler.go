@@ -5,6 +5,7 @@ import (
 	"io"
 	mamasdb "mamastw/database"
 	"net/http"
+	"strconv"
 )
 
 func GetGastos(w http.ResponseWriter, r *http.Request) {
@@ -48,11 +49,18 @@ func PutGasto(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "PUT method.")
 	fmt.Fprintf(w, "ID: %s", id)
 	fmt.Fprintf(w, "Body: %s", body)
+	mamasdb.UpdateGasto(1, "2024-09-02", "Comida", 12.34111)
 }
 
 func DeleteGasto(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id")
+	id := r.URL.Query().Get("id") // id := r.URL.Query().Get("id")
+	idInt, _ := strconv.Atoi(id)
+	mama, err := mamasdb.DeleteGasto(idInt)
+	if err != nil {
+		fmt.Fprintf(w, "Error al eliminar el gasto: %s", err)
+	}
 	fmt.Fprintf(w, "DELETE method. ID: %s", id)
+	fmt.Fprintf(w, "Gasto eliminado: %d", mama)
 }
 
 func GetIngresos(w http.ResponseWriter, r *http.Request) {

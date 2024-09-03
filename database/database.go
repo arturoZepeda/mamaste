@@ -86,3 +86,37 @@ func selectGastoId(id int) {
 		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
 	}
 }
+
+func UpdateGasto(id int, fecha, concepto string, cantidad float64) (string, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sqlStmt := `update gastos set fecha = ?, concepto = ?, cantidad = ? where id = ?;`
+	_, err = db.Exec(sqlStmt, fecha, concepto, cantidad, id)
+	if err != nil {
+		log.Printf("%q: %s\n", err, sqlStmt)
+		return "Error al actualizar el gasto", err
+	} else {
+		fmt.Println("Gasto actualizado")
+	}
+	return "Gasto actualizado", nil
+}
+
+func DeleteGasto(id int) (int, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sqlStmt := `delete from gastos where id = ?;`
+	_, err = db.Exec(sqlStmt, id)
+	if err != nil {
+		log.Printf("%q: %s\n", err, sqlStmt)
+		return id, err
+	} else {
+		fmt.Println("Gasto borrado")
+	}
+	return id, nil
+}
