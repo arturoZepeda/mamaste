@@ -120,3 +120,99 @@ func DeleteGasto(id int) (int, error) {
 	}
 	return id, nil
 }
+
+func InsertIngreso(fecha, concepto string, cantidad float64) (string, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sqlStmt := `insert into ingresos (fecha, concepto, cantidad) values (?, ?, ?);`
+	_, err = db.Exec(sqlStmt, fecha, concepto, cantidad)
+	if err != nil {
+		log.Printf("%q: %s\n", err, sqlStmt)
+		return "", err
+	} else {
+		fmt.Println("Ingreso insertado")
+		return "Ingreso insertado", nil
+	}
+}
+
+func GetIngresos() (string, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("select * from ingresos")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	fmt.Println("ID | Fecha | Concepto | Cantidad")
+	for rows.Next() {
+		var id int
+		var fecha string
+		var concepto string
+		var cantidad float64
+		rows.Scan(&id, &fecha, &concepto, &cantidad)
+		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
+	}
+	return "Ingresos", nil
+}
+
+func selectIngresoId(id int) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	rows, err := db.Query("select * from ingresos where id = ?", id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	fmt.Println("ID | Fecha | Concepto | Cantidad")
+	for rows.Next() {
+		var id int
+		var fecha string
+		var concepto string
+		var cantidad float64
+		rows.Scan(&id, &fecha, &concepto, &cantidad)
+		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
+	}
+}
+
+func UpdateIngreso(id int, fecha, concepto string, cantidad float64) (string, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sqlStmt := `update ingresos set fecha = ?, concepto = ?, cantidad = ? where id = ?;`
+	_, err = db.Exec(sqlStmt, fecha, concepto, cantidad, id)
+	if err != nil {
+		log.Printf("%q: %s\n", err, sqlStmt)
+		return "Error al actualizar el ingreso", err
+	} else {
+		fmt.Println("Ingreso actualizado")
+	}
+	return "Ingreso actualizado", nil
+}
+
+func DeleteIngreso(id int) (int, error) {
+	db, err := sql.Open("sqlite3", "./gastos.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sqlStmt := `delete from ingresos where id = ?;`
+	_, err = db.Exec(sqlStmt, id)
+	if err != nil {
+		log.Printf("%q: %s\n", err, sqlStmt)
+		return id, err
+	} else {
+		fmt.Println("Ingreso borrado")
+	}
+	return id, nil
+}

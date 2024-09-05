@@ -65,10 +65,23 @@ func DeleteGasto(w http.ResponseWriter, r *http.Request) {
 
 func GetIngresos(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Get method desde handler")
+	FM, err := mamasdb.GetIngresos()
+	if err != nil {
+		fmt.Fprintf(w, "Error al obtener los ingresos: %s", err)
+		return
+	}
+	fmt.Fprintf(w, "Ingresos: %s", FM)
 }
 
 func GetIngresoID(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
+	FM, err := mamasdb.selectIngresoId(id)
+	// FM, err := mamasdb.selectIngresoId(id)
+	if err != nil {
+		fmt.Fprintf(w, "Error al obtener el ingreso: %s", err)
+	}
+	fmt.Fprintf(w, "Ingreso: %s", FM)
+
 	fmt.Fprintf(w, "Get method con ID: %s", id)
 }
 
