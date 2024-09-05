@@ -161,15 +161,17 @@ func GetIngresos() (string, error) {
 	return "Ingresos", nil
 }
 
-func selectIngresoId(id int) {
+func selectIngresoId(id int) (string, error) {
 	db, err := sql.Open("sqlite3", "./gastos.db")
 	if err != nil {
 		log.Fatal(err)
+		return "", err
 	}
 	defer db.Close()
 	rows, err := db.Query("select * from ingresos where id = ?", id)
 	if err != nil {
 		log.Fatal(err)
+		return "", err
 	}
 	defer rows.Close()
 	fmt.Println("ID | Fecha | Concepto | Cantidad")
@@ -181,6 +183,7 @@ func selectIngresoId(id int) {
 		rows.Scan(&id, &fecha, &concepto, &cantidad)
 		fmt.Printf("%d | %s | %s | %.2f\n", id, fecha, concepto, cantidad)
 	}
+	return "Ingreso", nil
 }
 
 func UpdateIngreso(id int, fecha, concepto string, cantidad float64) (string, error) {
